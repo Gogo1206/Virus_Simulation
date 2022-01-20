@@ -25,7 +25,6 @@ class Person():
             return False
         if(self.location.get_distance(other_person.location)>variable.INFECTION_PROXIMITY):
             return False
-        #print("infect")
         if(self.masked and self.vaccinated):
             if(simulation.try_event(variable.MASKED_VACCINEATED_INFECTTION_PROBABILTY)):
                 return other_person.infect()
