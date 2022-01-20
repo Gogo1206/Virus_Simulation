@@ -12,7 +12,7 @@ class Person():
         self.status = variable.disease_status.VULNERABLE
         self.masked = False
         self.vaccinated = False
-        self.disease_counter = int(random.uniform(0,11))*24 + variable.INFECTION_TIME
+        self.disease_counter = int(random.uniform(24*3,variable.MAX_INFECTION_TIME))
         self.incubation_counter = int(random.uniform(0,variable.MAX_INCUBATION_TIME))
     def infect(self):
         if(self.status==variable.disease_status.VULNERABLE):
