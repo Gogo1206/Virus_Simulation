@@ -39,7 +39,6 @@ def sim_main():
 			for p in range(variable.NUM_PEOPLE):
 				ui.ui_redraw(people[p],int(i/24))
 			ui.ui_refresh()
-		#print(people[1].location.getX()," ",people[1].location.getY(),"-->",people[1].mobility_model.waypoint.getX()," ",people[1].mobility_model.waypoint.getY(),":",people[2].location.getX()," ",people[2].location.getY(),"-->",people[2].mobility_model.waypoint.getX()," ",people[2].mobility_model.waypoint.getY())
 		for p in range(variable.NUM_PEOPLE):
 			if (people[p].is_alive()):
 				people[p].mobility_model.move()
@@ -51,9 +50,6 @@ def sim_main():
 					if ((not p == p2) and people[p2].is_alive() and (not people[p].status==variable.disease_status.VULNERABLE)):
 						people[p].try_infect(people[p2])
       
-		# for i in range (variable.NUM_PEOPLE):
-		# 	print(people[i].location.getX()," ",people[i].location.getY()," ",people[i].status)
-
 		num_infected = 0
 		num_symptomatic = 0
 		num_asymptomatic = 0
@@ -62,8 +58,6 @@ def sim_main():
 		num_vulnerable = 0
 		num_incubation = 0
 		for p in range(variable.NUM_PEOPLE):
-			# if(not people[p].status==variable.disease_status.VULNERABLE):
-			# 	print(people[p].status)
 			if (people[p].is_alive()==False):
 				num_dead+=1
 			if (people[p].status == variable.disease_status.INCUBATION):
@@ -102,12 +96,12 @@ def sim_main():
 	print("Peak infections : %i\n"% max_infected_at_once)
 	plt.xlim([0,max])
 	plt.axhline(y=max_infected_at_once,color="red",linestyle="--",label="Max Infection")
-	plt.plot(vulnerable_history,label="Vulnerable #",lw=3)
-	plt.plot(incubation_history,label="Incubation #")
-	plt.plot(asymptomatic_history,label="Asymptomatic #")
-	plt.plot(symptomatic_history,label="Sysptomatic #")
-	plt.plot(infected_history,label="Totoal Infected #",lw=3)
-	plt.plot(immune_history,label="Immune #",lw=3)
-	plt.plot(dead_history,label="Dead #")
+	plt.plot(vulnerable_history,label="Vulnerable #",lw=3,color='blue')
+	plt.plot(incubation_history,label="Incubation #",color="yellow")
+	plt.plot(asymptomatic_history,label="Asymptomatic #",color="orange")
+	plt.plot(symptomatic_history,label="Sysptomatic #",color="red")
+	plt.plot(infected_history,label="Totoal Infected #",lw=3,color="purple")
+	plt.plot(immune_history,label="Immune #",lw=3,color="green")
+	plt.plot(dead_history,label="Dead #",color="black")
 	plt.legend()
 	plt.show()
