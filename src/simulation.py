@@ -1,9 +1,8 @@
 import random
 import variable
 import person
-import location
 import ui
-#import ui
+import matplotlib.pyplot as plt
 
 #saturated = false;
 
@@ -19,6 +18,7 @@ def sim_main():
 	infected_history = [0] * variable.SIM_HOURS
 	immune_history = [0] * variable.SIM_HOURS
 	dead_history = [0] * variable.SIM_HOURS
+
 	people = [person.Person()] * variable.NUM_PEOPLE
 	for i in range (variable.NUM_PEOPLE):
 		people[i] = person.Person()
@@ -31,12 +31,13 @@ def sim_main():
 		people[i].symptomatic_check()
   
 	max_infected_at_once = 0
-
+	max=0
 	for i in range (variable.SIM_HOURS):
+		max+=1
 		if (not i==0):
 			ui.ui_delete()
 			for p in range(variable.NUM_PEOPLE):
-				ui.ui_redraw(people[p])
+				ui.ui_redraw(people[p],int(i/24))
 			ui.ui_refresh()
 		#print(people[1].location.getX()," ",people[1].location.getY(),"-->",people[1].mobility_model.waypoint.getX()," ",people[1].mobility_model.waypoint.getY(),":",people[2].location.getX()," ",people[2].location.getY(),"-->",people[2].mobility_model.waypoint.getX()," ",people[2].mobility_model.waypoint.getY())
 		for p in range(variable.NUM_PEOPLE):
@@ -81,7 +82,7 @@ def sim_main():
 		if (num_infected > max_infected_at_once):
 			max_infected_at_once = num_infected
    
-	 	#saturated = (num_infected > SATURATION_THRESHOLD);
+# 	 	#saturated = (num_infected > SATURATION_THRESHOLD);
 
 		if ((i % 24) == 0 and (not num_infected == 0)):
 			if (num_dead == 0):
@@ -99,3 +100,14 @@ def sim_main():
 		if (num_infected == 0):
 			break
 	print("Peak infections : %i\n"% max_infected_at_once)
+	plt.xlim([0,max])
+	plt.axhline(y=max_infected_at_once,color="red",linestyle="--",label="Max Infection")
+	plt.plot(vulnerable_history,label="Vulnerable #",lw=3)
+	plt.plot(incubation_history,label="Incubation #")
+	plt.plot(asymptomatic_history,label="Asymptomatic #")
+	plt.plot(symptomatic_history,label="Sysptomatic #")
+	plt.plot(infected_history,label="Totoal Infected #",lw=3)
+	plt.plot(immune_history,label="Immune #",lw=3)
+	plt.plot(dead_history,label="Dead #")
+	plt.legend()
+	plt.show()
