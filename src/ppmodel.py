@@ -35,7 +35,7 @@ class PopularPlacesModel(mobility_model.MobilityModel):
         else:
             self.person.location.move_toward(self.waypoint,self.speed)
     def pick_new_waypoint(self):
-        self.speed = int(random.uniform(0,variable.PP_TOP_SPEED))+6
+        self.speed = int(random.uniform(10,variable.PP_TOP_SPEED))
         self.stay = int(random.uniform(0,variable.MAX_STAY))
         if(simulation.try_event(self.home_proabilty)):
             self.waypoint=self.home

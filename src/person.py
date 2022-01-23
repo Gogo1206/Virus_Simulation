@@ -12,7 +12,7 @@ class Person():
         self.status = variable.disease_status.VULNERABLE
         self.masked = False
         self.vaccinated = False
-        self.disease_counter = int(random.uniform(24*3,variable.MAX_INFECTION_TIME))
+        self.disease_counter = 0
         self.incubation_counter = int(random.uniform(0,variable.MAX_INCUBATION_TIME))
     def infect(self):
         if(self.status==variable.disease_status.VULNERABLE):
@@ -25,7 +25,7 @@ class Person():
             return False
         if(self.location.get_distance(other_person.location)>variable.INFECTION_PROXIMITY):
             return False
-        if(other_person.mobility_model.waypoint==other_person.mobility_model.home):
+        if(other_person.location.at_location(other_person.mobility_model.home)):
             if(simulation.try_event(variable.HOME_INFECTTION_PROBABILTY)):
                 return other_person.infect()
         if(other_person.masked and other_person.vaccinated):
@@ -44,13 +44,17 @@ class Person():
         if(self.vaccinated):
             if(simulation.try_event(variable.VACCINEATED_ASYMPTOMATIC_PROBABILTY)):
                 self.status=variable.disease_status.ASYMPTOMATIC
+                self.disease_counter = int(random.uniform(24*7,variable.MAX_ASYMPTOMATIC_INFECTION_TIME))
             else:
                 self.status=variable.disease_status.SYMPTOMATIC
+                self.disease_counter = int(random.uniform(24*3,variable.MAX_SYMPTOMATIC_INFECTION_TIME))
         else:
             if (simulation.try_event(variable.NORMAL_ASYMPTOMATIC_PROBABILTY)):
                 self.status=variable.disease_status.ASYMPTOMATIC
+                self.disease_counter = int(random.uniform(24*7,variable.MAX_ASYMPTOMATIC_INFECTION_TIME))
             else:
                 self.status=variable.disease_status.SYMPTOMATIC
+                self.disease_counter = int(random.uniform(24*3,variable.MAX_SYMPTOMATIC_INFECTION_TIME))
     def mask_check(self):
         if(simulation.try_event(variable.MASKING_PERCENTAGE)):
             self.masked = True

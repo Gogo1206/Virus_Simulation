@@ -1,11 +1,12 @@
 import random
 from time import sleep
-
-import numpy as np
 import variable
 import person
 import ui
 import matplotlib.pyplot as plt
+import time
+
+start_time = time.time()
 
 #saturated = false;
 
@@ -22,11 +23,9 @@ def sim_main():
 	immune_history = [0] * variable.SIM_HOURS
 	dead_history = [0] * variable.SIM_HOURS
 
-	people = [None] * variable.NUM_PEOPLE
+	people = [person.Person()] * variable.NUM_PEOPLE
 	for i in range (variable.NUM_PEOPLE):
 		people[i] = person.Person()
-  
-	for i in range (variable.NUM_PEOPLE):
 		people[i].mask_check()
 		people[i].vaccine_check()
   
@@ -36,6 +35,8 @@ def sim_main():
 	max_infected_at_once = 0
 	max=0
 	for i in range (variable.SIM_HOURS):
+		max+=1
+		
 		num_infected = 0
 		num_symptomatic = 0
 		num_asymptomatic = 0
@@ -43,18 +44,18 @@ def sim_main():
 		num_dead = 0
 		num_vulnerable = 0
 		num_incubation = 0
-		max+=1
-
 		ui.ui_delete()
 		for p in range(variable.NUM_PEOPLE):
-			if(not i==0):
+			if (not i==0):
 				ui.ui_redraw(people[p],int(i/24))
 			if (people[p].is_alive()):
 				people[p].mobility_model.move()
 				people[p].progress_disease()
-				for p2 in range(variable.NUM_PEOPLE):
-					if ((not p == p2) and people[p2].is_alive() and (not people[p].status==variable.disease_status.VULNERABLE)):
-						people[p].try_infect(people[p2])
+				if(people[p].status==variable.disease_status.INCUBATION or people[p].status==variable.disease_status.ASYMPTOMATIC or people[p].status==variable.disease_status.SYMPTOMATIC):
+					for p2 in range(p+1,variable.NUM_PEOPLE):
+						if (people[p2].is_alive()):
+							people[p].try_infect(people[p2])
+							people[p2].try_infect(people[p])
 			if (people[p].is_alive()==False):
 				num_dead+=1
 			if (people[p].status == variable.disease_status.INCUBATION):
@@ -92,6 +93,7 @@ def sim_main():
 		if (num_infected == 0):
 			break
 	print("Peak infections : %i\n"% max_infected_at_once)
+	print("--- %s seconds ---" % (time.time() - start_time))
 	plt.xlim(0,max-1)
 	plt.xlabel("Hours #")
 	plt.ylabel("Population #")
