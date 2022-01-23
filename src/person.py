@@ -25,13 +25,16 @@ class Person():
             return False
         if(self.location.get_distance(other_person.location)>variable.INFECTION_PROXIMITY):
             return False
-        if(self.masked and self.vaccinated):
+        if(other_person.mobility_model.waypoint==other_person.mobility_model.home):
+            if(simulation.try_event(variable.HOME_INFECTTION_PROBABILTY)):
+                return other_person.infect()
+        if(other_person.masked and other_person.vaccinated):
             if(simulation.try_event(variable.MASKED_VACCINEATED_INFECTTION_PROBABILTY)):
                 return other_person.infect()
-        if(self.masked):
+        if(other_person.masked):
             if(simulation.try_event(variable.MASKED_INFECTTION_PROBABILTY)):
                 return other_person.infect()
-        if(self.vaccinated):
+        if(other_person.vaccinated):
             if(simulation.try_event(variable.VACCINEATED_INFECTTION_PROBABILTY)):
                 return other_person.infect()
         if(simulation.try_event(variable.NORMAL_INFECTTION_PROBABILTY)):
@@ -68,6 +71,10 @@ class Person():
             if(self.disease_counter<=0):
                 if(self.status==variable.disease_status.SYMPTOMATIC):
                     if(simulation.try_event(variable.NORMAL_FATALITY_RATE)):
+                        self.status=variable.disease_status.DEAD
+                        return
+                elif(self.status==variable.disease_status.ASYMPTOMATIC):
+                    if(simulation.try_event(variable.ASYMPTOMATIC_FATALITY_RATE)):
                         self.status=variable.disease_status.DEAD
                         return
                 self.status=variable.disease_status.IMMUNE

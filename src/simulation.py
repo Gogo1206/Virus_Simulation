@@ -1,4 +1,7 @@
 import random
+from time import sleep
+
+import numpy as np
 import variable
 import person
 import ui
@@ -19,7 +22,7 @@ def sim_main():
 	immune_history = [0] * variable.SIM_HOURS
 	dead_history = [0] * variable.SIM_HOURS
 
-	people = [person.Person()] * variable.NUM_PEOPLE
+	people = [None] * variable.NUM_PEOPLE
 	for i in range (variable.NUM_PEOPLE):
 		people[i] = person.Person()
   
@@ -33,23 +36,6 @@ def sim_main():
 	max_infected_at_once = 0
 	max=0
 	for i in range (variable.SIM_HOURS):
-		max+=1
-		if (not i==0):
-			ui.ui_delete()
-			for p in range(variable.NUM_PEOPLE):
-				ui.ui_redraw(people[p],int(i/24))
-			ui.ui_refresh()
-		for p in range(variable.NUM_PEOPLE):
-			if (people[p].is_alive()):
-				people[p].mobility_model.move()
-				people[p].progress_disease()
-    
-		for p in range(variable.NUM_PEOPLE):
-			if (people[p].is_alive()):
-				for p2 in range(variable.NUM_PEOPLE):
-					if ((not p == p2) and people[p2].is_alive() and (not people[p].status==variable.disease_status.VULNERABLE)):
-						people[p].try_infect(people[p2])
-      
 		num_infected = 0
 		num_symptomatic = 0
 		num_asymptomatic = 0
@@ -57,7 +43,18 @@ def sim_main():
 		num_dead = 0
 		num_vulnerable = 0
 		num_incubation = 0
+		max+=1
+
+		ui.ui_delete()
 		for p in range(variable.NUM_PEOPLE):
+			if(not i==0):
+				ui.ui_redraw(people[p],int(i/24))
+			if (people[p].is_alive()):
+				people[p].mobility_model.move()
+				people[p].progress_disease()
+				for p2 in range(variable.NUM_PEOPLE):
+					if ((not p == p2) and people[p2].is_alive() and (not people[p].status==variable.disease_status.VULNERABLE)):
+						people[p].try_infect(people[p2])
 			if (people[p].is_alive()==False):
 				num_dead+=1
 			if (people[p].status == variable.disease_status.INCUBATION):
@@ -73,6 +70,7 @@ def sim_main():
 				num_immune+=1
 			if (people[p].status == variable.disease_status.VULNERABLE):
 				num_vulnerable+=1
+		ui.ui_refresh()
 		if (num_infected > max_infected_at_once):
 			max_infected_at_once = num_infected
    
@@ -94,7 +92,9 @@ def sim_main():
 		if (num_infected == 0):
 			break
 	print("Peak infections : %i\n"% max_infected_at_once)
-	plt.xlim([0,max])
+	plt.xlim(0,max-1)
+	plt.xlabel("Hours #")
+	plt.ylabel("Population #")
 	plt.axhline(y=max_infected_at_once,color="red",linestyle="--",label="Max Infection")
 	plt.plot(vulnerable_history,label="Vulnerable #",lw=3,color='blue')
 	plt.plot(incubation_history,label="Incubation #",color="yellow")

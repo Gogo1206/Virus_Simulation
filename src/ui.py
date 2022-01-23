@@ -34,7 +34,7 @@ def ui_redraw(person,day):
     if(person.status==variable.disease_status.DEAD):
         color="black"
     ball = Ball(canvas,person.location.getX()/10,person.location.getY()/10,5,color)
-    canvas.create_text(40, 20, text="Day "+str(day), fill="black", font=('Helvetica 18'))
+    canvas.create_text(55, 20, text="Day "+str(day), fill="black", font=('Helvetica 24'))
 
 def ui_refresh():
     window.update()
