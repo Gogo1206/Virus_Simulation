@@ -21,8 +21,6 @@ class Person():
         else:
             return False
     def try_infect(self,other_person):
-        if(not other_person.status==variable.disease_status.VULNERABLE):
-            return False
         if(self.location.get_distance(other_person.location)>variable.INFECTION_PROXIMITY):
             return False
         if(other_person.location.at_location(other_person.mobility_model.home)):
@@ -44,14 +42,14 @@ class Person():
         if(self.vaccinated):
             if(simulation.try_event(variable.VACCINEATED_ASYMPTOMATIC_PROBABILTY)):
                 self.status=variable.disease_status.ASYMPTOMATIC
-                self.disease_counter = int(random.uniform(24*7,variable.MAX_ASYMPTOMATIC_INFECTION_TIME))
+                self.disease_counter = int(random.uniform(24*3,variable.MAX_ASYMPTOMATIC_INFECTION_TIME))
             else:
                 self.status=variable.disease_status.SYMPTOMATIC
                 self.disease_counter = int(random.uniform(24*3,variable.MAX_SYMPTOMATIC_INFECTION_TIME))
         else:
             if (simulation.try_event(variable.NORMAL_ASYMPTOMATIC_PROBABILTY)):
                 self.status=variable.disease_status.ASYMPTOMATIC
-                self.disease_counter = int(random.uniform(24*7,variable.MAX_ASYMPTOMATIC_INFECTION_TIME))
+                self.disease_counter = int(random.uniform(24*3,variable.MAX_ASYMPTOMATIC_INFECTION_TIME))
             else:
                 self.status=variable.disease_status.SYMPTOMATIC
                 self.disease_counter = int(random.uniform(24*3,variable.MAX_SYMPTOMATIC_INFECTION_TIME))

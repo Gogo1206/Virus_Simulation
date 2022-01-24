@@ -36,7 +36,6 @@ def sim_main():
 	max=0
 	for i in range (variable.SIM_HOURS):
 		max+=1
-		
 		num_infected = 0
 		num_symptomatic = 0
 		num_asymptomatic = 0
@@ -52,11 +51,10 @@ def sim_main():
 				people[p].mobility_model.move()
 				people[p].progress_disease()
 				if(people[p].status==variable.disease_status.INCUBATION or people[p].status==variable.disease_status.ASYMPTOMATIC or people[p].status==variable.disease_status.SYMPTOMATIC):
-					for p2 in range(p+1,variable.NUM_PEOPLE):
-						if (people[p2].is_alive()):
+					for p2 in range(variable.NUM_PEOPLE):
+						if (people[p2].status==variable.disease_status.VULNERABLE):
 							people[p].try_infect(people[p2])
-							people[p2].try_infect(people[p])
-			if (people[p].is_alive()==False):
+			if (not people[p].is_alive()):
 				num_dead+=1
 			if (people[p].status == variable.disease_status.INCUBATION):
 				num_incubation+=1
