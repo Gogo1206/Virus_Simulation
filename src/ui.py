@@ -2,11 +2,13 @@ from tkinter import *
 from tkinter.ttk import *
 from ball import Ball
 import variable
+import matplotlib.pyplot as plt
 
 HEIGHT = variable.Y_LIMIT/10
 WIDTH = variable.X_LIMIT/10
 window = Tk()
 canvas=Canvas(window,width=WIDTH,height=HEIGHT,bg="white")
+graph=Canvas(window,width=WIDTH,height=HEIGHT,bg="white")
 window.title("Virus Simulation")
 
 def start_ui():
@@ -20,7 +22,7 @@ def ui_redraw(person,day):
         elif(person.masked):
             color="#ADD8E6"
         elif(person.vaccinated):
-            color="#0000FF"
+            color="#4d4dff"
         else:
             color="white"
     if(person.status==variable.disease_status.INCUBATION):
@@ -41,3 +43,18 @@ def ui_refresh():
 
 def ui_delete():
     canvas.delete("all")
+    
+def print_graph(max_day,max_infected_at_once,vulnerable_history,incubation_history,asymptomatic_history,symptomatic_history,infected_history,immune_history,dead_history):
+    plt.xlim(0,max_day-1)
+    plt.xlabel("Hours #")
+    plt.ylabel("Population #")
+    plt.axhline(y=max_infected_at_once,color="red",linestyle="--",label="Max Infection")
+    plt.plot(vulnerable_history,label="Vulnerable #",lw=3,color='blue')
+    plt.plot(incubation_history,label="Incubation #",color="yellow")
+    plt.plot(asymptomatic_history,label="Asymptomatic #",color="orange")
+    plt.plot(symptomatic_history,label="Sysptomatic #",color="red")
+    plt.plot(infected_history,label="Total Infected #",lw=3,color="purple")
+    plt.plot(immune_history,label="Immune #",lw=3,color="green")
+    plt.plot(dead_history,label="Dead #",color="black")
+    plt.legend()
+    plt.show()
