@@ -17,7 +17,7 @@ graph = FigureCanvasTkAgg(fig, master = window)
 window.title("Virus Simulation")
 
 def start_ui():
-    window.geometry(str(int(WIDTH)*2)+"x"+str(int(HEIGHT)*2))
+    window.geometry(str(int(WIDTH)*2)+"x"+str(int(HEIGHT)))
     graph.get_tk_widget().pack(side='right',anchor='nw',expand=True,fill='both')
     canvas.pack(side='left',anchor='nw', expand = True, fill = 'both')
 
