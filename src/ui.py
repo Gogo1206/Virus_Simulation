@@ -12,14 +12,18 @@ WIDTH = variable.X_LIMIT/10
 fig = Figure()
 plot1 = fig.add_subplot()
 window = Tk()
+frame = Frame(window)
 canvas = Canvas(window, width = WIDTH, height = HEIGHT, bg = "white")
 graph = FigureCanvasTkAgg(fig, master = window)
 window.title("Virus Simulation")
+toolbar = NavigationToolbar2Tk(graph,frame)
 
 def start_ui():
     window.geometry(str(int(WIDTH)*2)+"x"+str(int(HEIGHT)))
+    frame.pack(side=BOTTOM)
     graph.get_tk_widget().pack(side='right',anchor='nw',expand=True,fill='both')
     canvas.pack(side='left',anchor='nw', expand = True, fill = 'both')
+    toolbar.update()
 
 def ui_redraw(person,day):
     if(person.status==variable.disease_status.VULNERABLE):
