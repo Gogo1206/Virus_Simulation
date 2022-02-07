@@ -3,17 +3,23 @@ from tkinter.ttk import *
 from ball import Ball
 import variable
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
+NavigationToolbar2Tk)
 
 HEIGHT = variable.Y_LIMIT/10
 WIDTH = variable.X_LIMIT/10
+fig = Figure()
+plot1 = fig.add_subplot()
 window = Tk()
-canvas=Canvas(window,width=WIDTH,height=HEIGHT,bg="white")
-graph=Canvas(window,width=WIDTH,height=HEIGHT,bg="white")
+canvas = Canvas(window, width = WIDTH, height = HEIGHT, bg = "white")
+graph = FigureCanvasTkAgg(fig, master = window)
 window.title("Virus Simulation")
 
 def start_ui():
-    window.geometry(str(int(WIDTH))+"x"+str(int(HEIGHT)))
-    canvas.pack()
+    window.geometry(str(int(WIDTH)*2)+"x"+str(int(HEIGHT)*2))
+    graph.get_tk_widget().pack(side='right',anchor='nw',expand=True,fill='both')
+    canvas.pack(side='left',anchor='nw', expand = True, fill = 'both')
 
 def ui_redraw(person,day):
     if(person.status==variable.disease_status.VULNERABLE):
@@ -45,16 +51,20 @@ def ui_delete():
     canvas.delete("all")
     
 def print_graph(max_day,max_infected_at_once,vulnerable_history,incubation_history,asymptomatic_history,symptomatic_history,infected_history,immune_history,dead_history):
-    plt.xlim(0,max_day-1)
-    plt.xlabel("Hours #")
-    plt.ylabel("Population #")
-    plt.axhline(y=max_infected_at_once,color="red",linestyle="--",label="Max Infection")
-    plt.plot(vulnerable_history,label="Vulnerable #",lw=3,color='blue')
-    plt.plot(incubation_history,label="Incubation #",color="yellow")
-    plt.plot(asymptomatic_history,label="Asymptomatic #",color="orange")
-    plt.plot(symptomatic_history,label="Sysptomatic #",color="red")
-    plt.plot(infected_history,label="Total Infected #",lw=3,color="purple")
-    plt.plot(immune_history,label="Immune #",lw=3,color="green")
-    plt.plot(dead_history,label="Dead #",color="black")
-    plt.legend()
-    plt.show()
+    plot1.clear()
+    plot1.set_xlim([0,max_day])
+    plot1.set_xlabel("Hours #")
+    plot1.set_ylabel("Population #")
+    plot1.axhline(y=max_infected_at_once,color="red",linestyle="--",label="Max Infection")
+    plot1.plot(vulnerable_history,label="Vulnerable #",lw=3,color='blue')
+    plot1.plot(incubation_history,label="Incubation #",color="yellow")
+    plot1.plot(asymptomatic_history,label="Asymptomatic #",color="orange")
+    plot1.plot(symptomatic_history,label="Sysptomatic #",color="red")
+    plot1.plot(infected_history,label="Total Infected #",lw=3,color="purple")
+    plot1.plot(immune_history,label="Immune #",lw=3,color="green")
+    plot1.plot(dead_history,label="Dead #",color="black")
+    plot1.legend(loc='lower center', bbox_to_anchor=(0.5, 1), ncol=3, fancybox=True, shadow=True)
+    graph.draw()
+    
+def end():
+    window.mainloop()
