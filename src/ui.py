@@ -19,12 +19,12 @@ window.title("Virus Simulation")
 toolbar = NavigationToolbar2Tk(graph,frame)
 
 def start_ui():
-    window.geometry(str(int(WIDTH)*2)+"x"+str(int(HEIGHT)))
+    window.geometry(str(int(WIDTH)*2)+"x"+str(int(HEIGHT)+10))
     frame.pack(side=BOTTOM)
     graph.get_tk_widget().pack(side='right',anchor='nw',expand=True,fill='both')
     canvas.pack(side='left',anchor='nw', expand = True, fill = 'both')
     toolbar.update()
-
+    
 def ui_redraw(person,day):
     if(person.status==variable.disease_status.VULNERABLE):
         if(person.masked and person.vaccinated):
@@ -45,7 +45,7 @@ def ui_redraw(person,day):
         color="green"
     if(person.status==variable.disease_status.DEAD):
         color="black"
-    ball = Ball(canvas,person.location.getX()/10,person.location.getY()/10,5,color)
+    Ball(canvas,person.location.getX()/10,person.location.getY()/10,5,color)
     canvas.create_text(55, 20, text="Day "+str(day), fill="black", font=('Helvetica 24'))
 
 def ui_refresh():
@@ -54,9 +54,9 @@ def ui_refresh():
 def ui_delete():
     canvas.delete("all")
     
-def print_graph(max_day,max_infected_at_once,vulnerable_history,incubation_history,asymptomatic_history,symptomatic_history,infected_history,immune_history,dead_history):
+def print_graph(hours_past,max_infected_at_once,vulnerable_history,incubation_history,asymptomatic_history,symptomatic_history,infected_history,immune_history,dead_history):
     plot1.clear()
-    plot1.set_xlim([0,max_day])
+    plot1.set_xlim([0,hours_past])
     plot1.set_xlabel("Hours #")
     plot1.set_ylabel("Population #")
     plot1.axhline(y=max_infected_at_once,color="red",linestyle="--",label="Max Infection")
