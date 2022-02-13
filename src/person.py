@@ -14,6 +14,8 @@ class Person():
         self.vaccinated = False
         self.disease_counter = 0
         self.incubation_counter = random.randint(0,variable.MAX_INCUBATION_TIME)
+        self.infected = 0
+        self.infection_level = -1
     def infect(self):
         if(self.status==variable.disease_status.VULNERABLE):
             self.status=variable.disease_status.INCUBATION
@@ -25,17 +27,27 @@ class Person():
             return False
         if(other_person.location.at_location(other_person.mobility_model.home)):
             if(simulation.try_event(variable.HOME_INFECTTION_PROBABILTY)):
+                self.infected+=1
+                other_person.infection_level=self.infection_level + 1
                 return other_person.infect()
         if(other_person.masked and other_person.vaccinated):
             if(simulation.try_event(variable.MASKED_VACCINEATED_INFECTTION_PROBABILTY)):
+                self.infected+=1
+                other_person.infection_level=self.infection_level + 1
                 return other_person.infect()
         if(other_person.masked):
             if(simulation.try_event(variable.MASKED_INFECTTION_PROBABILTY)):
+                self.infected+=1
+                other_person.infection_level=self.infection_level + 1
                 return other_person.infect()
         if(other_person.vaccinated):
             if(simulation.try_event(variable.VACCINEATED_INFECTTION_PROBABILTY)):
+                self.infected+=1
+                other_person.infection_level=self.infection_level + 1
                 return other_person.infect()
         if(simulation.try_event(variable.NORMAL_INFECTTION_PROBABILTY)):
+            self.infected+=1
+            other_person.infection_level=self.infection_level + 1
             return other_person.infect()
         return False
     def symptomatic_check(self):

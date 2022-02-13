@@ -5,11 +5,18 @@ import person
 import location
 import variable
 
-popularPlaces = [location.Location()] * variable.NUM_POPULAR_PLACES
+popularPlaces = []
+
+xi = 1
+yi = 1
 
 for i in range(variable.NUM_POPULAR_PLACES):
-    popularPlaces[i] = location.Location()
-    popularPlaces[i].random_location()
+    new_place = location.Location()
+    new_place.random_location()
+    # new_place.location(xi*1250,yi*1071.4285)
+    # xi+=1
+    # yi+=1
+    popularPlaces.append(new_place)
 
 class PopularPlacesModel(mobility_model.MobilityModel):
     def __init__(self):
