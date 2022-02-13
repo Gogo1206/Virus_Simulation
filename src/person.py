@@ -31,7 +31,7 @@ class Person():
                 other_person.infection_level=self.infection_level + 1
                 return other_person.infect()
         if(other_person.masked and other_person.vaccinated):
-            if(simulation.try_event(variable.MASKED_VACCINEATED_INFECTTION_PROBABILTY)):
+            if(simulation.try_event(variable.MASKED_VACCINATED_INFECTTION_PROBABILTY)):
                 self.infected+=1
                 other_person.infection_level=self.infection_level + 1
                 return other_person.infect()
@@ -41,7 +41,7 @@ class Person():
                 other_person.infection_level=self.infection_level + 1
                 return other_person.infect()
         if(other_person.vaccinated):
-            if(simulation.try_event(variable.VACCINEATED_INFECTTION_PROBABILTY)):
+            if(simulation.try_event(variable.VACCINATED_INFECTTION_PROBABILTY)):
                 self.infected+=1
                 other_person.infection_level=self.infection_level + 1
                 return other_person.infect()
@@ -52,7 +52,7 @@ class Person():
         return False
     def symptomatic_check(self):
         if(self.vaccinated):
-            if(simulation.try_event(variable.VACCINEATED_ASYMPTOMATIC_PROBABILTY)):
+            if(simulation.try_event(variable.VACCINATED_ASYMPTOMATIC_PROBABILTY)):
                 self.status=variable.disease_status.ASYMPTOMATIC
                 self.disease_counter = random.randint(24*3,variable.MAX_ASYMPTOMATIC_INFECTION_TIME)
             else:
