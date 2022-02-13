@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
 NavigationToolbar2Tk)
+import ppmodel
 
 HEIGHT = variable.Y_LIMIT/10
 WIDTH = variable.X_LIMIT/10
@@ -47,6 +48,10 @@ def ui_redraw(person,day):
         color="black"
     Ball(canvas,person.location.getX()/10,person.location.getY()/10,5,color)
     canvas.create_text(55, 20, text="Day "+str(day), fill="black", font=('Helvetica 24'))
+    
+def draw_popularPlace():
+    for place in ppmodel.popularPlaces:
+        Ball(canvas, place.getX()/10, place.getY()/10, 10, 'pink')
 
 def ui_refresh():
     window.update()
