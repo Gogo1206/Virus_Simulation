@@ -61,7 +61,6 @@ def sim_main():
 		num_vulnerable = 0
 		num_incubation = 0
 		ui.ui_delete()
-  
 		ui.draw_popularPlace()
 
 		#simulation for every individual
