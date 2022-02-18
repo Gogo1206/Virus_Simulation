@@ -93,8 +93,8 @@ def sim_main():
 				num_immune+=1
 			if (p.status == variable.disease_status.VULNERABLE):
 				num_vulnerable+=1
-			if (not i==0):
-				ui.ui_redraw(p,int(i/24))
+			# if (not i==0):
+				# ui.ui_redraw(p,int(i/24))
 		ui.ui_refresh()
 		if (num_infected > max_infected_at_once):
 			max_infected_at_once = num_infected
