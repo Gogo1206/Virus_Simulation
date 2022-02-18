@@ -1,7 +1,6 @@
 import xlwt
-from xlwt import Workbook
 
-wb = Workbook()
+wb = xlwt.Workbook()
 sheet1 = wb.add_sheet('Data')
 
 def start():
