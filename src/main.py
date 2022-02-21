@@ -1,5 +1,3 @@
-import variable
-import person
 import simulation
 import ui
 

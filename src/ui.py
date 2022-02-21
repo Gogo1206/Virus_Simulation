@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter.ttk import *
 from ball import Ball
 import variable
-import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
 NavigationToolbar2Tk)

@@ -39,7 +39,7 @@ def sim_main():
 		people.append(new_person)
 
 	#set initial infection individuals
-	for i in range (variable.INITIAL_INFECTIONS) :
+	for i in range (variable.INITIAL_INFECTIONS):
 		people[i].symptomatic_check()
 		people[i].infection_level=0
 	
