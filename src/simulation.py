@@ -11,8 +11,8 @@ import excel
 
 start_time = time.time()
 
-#try event with given probability
 def try_event(probability):
+	'''try event with given probability'''
 	rnum = (int(random.uniform(0,100))+1)/100
 	return rnum <= probability
 
@@ -124,10 +124,10 @@ def sim_main():
 		if (num_infected == 0):
 			break
 
-	sir.cal_infection_rate(people)
+	sir.cal_infection_rate(people,hours_past)
 
 	print("Hours ran: ",hours_past)
-	print("Peak infections : %i"% max_infected_at_once)
+	print("Peak infection: %i"% max_infected_at_once)
 
 	print("--- %s seconds ---" % (time.time() - start_time))
 	ui.end()

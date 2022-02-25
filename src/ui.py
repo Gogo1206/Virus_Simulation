@@ -26,6 +26,7 @@ def start_ui():
     toolbar.update()
     
 def ui_redraw(person,day):
+    '''draw every "person" onto the canvas'''
     if(person.status==variable.disease_status.VULNERABLE):
         if(person.masked and person.vaccinated):
             color="#00008b"
@@ -49,16 +50,20 @@ def ui_redraw(person,day):
     canvas.create_text(55, 20, text="Day "+str(day), fill="black", font=('Helvetica 24'))
     
 def draw_popularPlace():
+    '''draw the popular places in canvas'''
     for place in ppmodel.popularPlaces:
         Ball(canvas, place.getX()/10, place.getY()/10, 10, 'pink')
 
 def ui_refresh():
+    '''refresh canvas'''
     window.update()
 
 def ui_delete():
+    '''clear canvas'''
     canvas.delete("all")
     
 def print_graph(hours_past,max_infected_at_once,vulnerable_history,incubation_history,asymptomatic_history,symptomatic_history,infected_history,immune_history,dead_history):
+    '''graph the simulation from given data'''
     plot1.clear()
     plot1.set_xlim([0,hours_past])
     plot1.set_ylim([0,1000])
@@ -76,4 +81,5 @@ def print_graph(hours_past,max_infected_at_once,vulnerable_history,incubation_hi
     graph.draw()
     
 def end():
+    '''end page for ui'''
     window.mainloop()

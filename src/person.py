@@ -25,7 +25,7 @@ class Person():
     def try_infect(self,other_person):
         if(self.location.get_distance(other_person.location)>variable.INFECTION_PROXIMITY):
             return False
-        if(other_person.location.at_location(other_person.mobility_model.home)):
+        if(other_person.location.at_location(other_person.mobility_model.home) or self.location.at_location(self.mobility_model.home)):
             if(simulation.try_event(variable.HOME_INFECTTION_PROBABILTY)):
                 self.infected+=1
                 other_person.infection_level=self.infection_level + 1
