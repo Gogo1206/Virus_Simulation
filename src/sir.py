@@ -1,6 +1,7 @@
 import excel
 import matplotlib.pyplot as plt
 import numpy as np
+import variable
 
 
 def Average(lst):
@@ -29,7 +30,7 @@ def cal_infection_rate(people,hours):
     for p in people:
         average_infect+=p.infected
     average_infect=average_infect/len(people)
-    print(average_infect)
+    # print(average_infect)
 
     levels = []
     for p in people:
@@ -38,62 +39,57 @@ def cal_infection_rate(people,hours):
                 levels.append(1)
             else:
                 levels[p.infection_level] += 1
-    for i in range(len(levels)):
-        print("Level ",i," has ",levels[i])
+    # for i in range(len(levels)):
+    #     print("Level ",i," has ",levels[i])
     infection_rates = []
     for i in range(len(levels)-1):
         infection_rates.append(levels[i+1]/levels[i])
     infection_rate = Average(infection_rates)
-    print(infection_rate)
+    # print(infection_rate)
     average_infection_rate = (average_infect+infection_rate)/2
     print("The average infection rate of two method is ",average_infection_rate)
-    graph_SIR(hours, average_infection_rate, 1/7.5)
+    SIR.graph_SIR(hours,average_infection_rate,1/7.5)
 
 
 class SIR():
     '''graph the SIR model'''
-    def __init__(self, days = 100, infection_rate = (1/3), recovery_rate = (1/ 10), starting_infected_porportion = 0.001):
+    def __init__(self, days, infection_rate, recovery_rate, starting_infected_porportion = 0.005):
         self.DAYS_NUMBER = days
         self.dt = 1 # time steps in day
         self.BETA = infection_rate
         self.GAMMA = recovery_rate
 
-        self.S = np.zeros((self.DAYS_NUMBER + 1) * 24) # susceptible
-        self.I = np.zeros((self.DAYS_NUMBER + 1) * 24) # infected
-        self.R = np.zeros((self.DAYS_NUMBER + 1) * 24) # recovered
+        self.S = [1] # susceptible
+        self.I = [starting_infected_porportion] # infected
+        self.R = [0] # recovered
         self.time = np.arange((self.DAYS_NUMBER + 1) * 24) * self.dt
-
-        #proportion
-        self.I[0] = starting_infected_porportion #initial infected
-        self.S[0] = 1 - self.I[0] #initial susceptible
-        self.R[0] = 0 #initial recovered
 
     def model(self):
         for hour in range(self.DAYS_NUMBER * 24):
-            self.S[hour + 1] = self.S[hour] - (self.BETA / 24) * (self.S[hour] * self.I[hour]) * self.dt
-            self.I[hour + 1] = self.I[hour] + ((self.BETA / 24) * self.S[hour] * self.I[hour] - (self.GAMMA / 24) * self.I[hour]) * self.dt
-            self.R[hour + 1] = self.R[hour] + ((self.GAMMA / 24) * self.I[hour]) * self.dt
+            self.S.append(self.S[hour] - (self.BETA / 24) * (self.S[hour] * self.I[hour]) * self.dt)
+            self.I.append(self.I[hour] + ((self.BETA / 24) * self.S[hour] * self.I[hour] - (self.GAMMA / 24) * self.I[hour]) * self.dt)
+            self.R.append(self.R[hour] + ((self.GAMMA / 24) * self.I[hour]) * self.dt)
 
     def plot(self):
         fig = plt.figure(1) 
         fig.clf()
     
-        plt.plot(self.time, self.S, 'b', lw=3, label = 'Susceptible')
-        plt.plot(self.time, self.I, 'r', lw=3, label = 'Infected')
-        plt.plot(self.time, self.R, 'g', lw=3, label = 'Recovered')
+        plt.plot(self.S, 'b', lw=3, label = 'Susceptible')
+        plt.plot(self.I, 'r', lw=3, label = 'Infected')
+        plt.plot(self.R, 'g', lw=3, label = 'Recovered')
         fig.legend()
         plt.xlabel('Hours')
         plt.xlim([0, 24 * (self.DAYS_NUMBER)])
         plt.ylabel('Fraction of Population')
         plt.show()
-
-def graph_SIR(hours,infection_rate,recovery_rate):
-    sir = SIR(int(hours/24), infection_rate,recovery_rate)
-    sir.model()
-    sir.plot()
+        
+    def graph_SIR(hours,infection_rate,recovery_rate):
+        sir = SIR(int(hours/24), infection_rate,recovery_rate)
+        sir.model()
     
-    max = 0
-    for i in sir.I:
-        if(i > max):
-            max = i
-    print("SIR peak infection: ",max)
+        peak = 0
+        for i in sir.I:
+            peak=max(i,peak)
+        print("SIR peak infection: ",int(peak*variable.NUM_PEOPLE))
+        
+        sir.plot()

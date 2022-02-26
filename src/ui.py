@@ -66,7 +66,7 @@ def print_graph(hours_past,max_infected_at_once,vulnerable_history,incubation_hi
     '''graph the simulation from given data'''
     plot1.clear()
     plot1.set_xlim([0,hours_past])
-    plot1.set_ylim([0,1000])
+    plot1.set_ylim([0,variable.NUM_PEOPLE])
     plot1.set_xlabel("Hours #")
     plot1.set_ylabel("Population #")
     plot1.axhline(y=max_infected_at_once,color="red",linestyle="--",label="Max Infection")

@@ -124,10 +124,9 @@ def sim_main():
 		if (num_infected == 0):
 			break
 
-	sir.cal_infection_rate(people,hours_past)
-
 	print("Hours ran: ",hours_past)
 	print("Peak infection: %i"% max_infected_at_once)
 
 	print("--- %s seconds ---" % (time.time() - start_time))
+	sir.cal_infection_rate(people,hours_past)
 	ui.end()
