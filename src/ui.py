@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
-from ball import Ball
+from Shape import Shape
+import Shape
 import variable
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
@@ -17,6 +18,7 @@ canvas = Canvas(window, width = WIDTH, height = HEIGHT, bg = "white")
 graph = FigureCanvasTkAgg(fig, master = window)
 window.title("Virus Simulation")
 toolbar = NavigationToolbar2Tk(graph,frame)
+shape = Shape.Shape(canvas)
 
 def start_ui():
     window.geometry(str(int(WIDTH)*2)+"x"+str(int(HEIGHT)+50))
@@ -46,13 +48,13 @@ def ui_redraw(person,day):
         color="green"
     if(person.status==variable.disease_status.DEAD):
         color="black"
-    Ball(canvas,person.location.getX()/10,person.location.getY()/10,5,color)
+    shape.draw_oval(person.location.getX()/10,person.location.getY()/10,5,color)
     canvas.create_text(55, 20, text="Day "+str(day), fill="black", font=('Helvetica 24'))
     
 def draw_popularPlace():
     '''draw the popular places in canvas'''
     for place in ppmodel.popularPlaces:
-        Ball(canvas, place.getX()/10, place.getY()/10, 10, 'pink')
+        shape.draw_square(place.getX()/10, place.getY()/10, 20, 'pink')
 
 def ui_refresh():
     '''refresh canvas'''
