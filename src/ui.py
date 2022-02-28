@@ -27,7 +27,7 @@ def start_ui():
     canvas.pack(side='left',anchor='nw', expand = True, fill = 'both')
     toolbar.update()
     
-def ui_redraw(person,day):
+def ui_redraw(person):
     '''draw every "person" onto the canvas'''
     if(person.status==variable.disease_status.VULNERABLE):
         if(person.masked and person.vaccinated):
@@ -49,15 +49,15 @@ def ui_redraw(person,day):
     if(person.status==variable.disease_status.DEAD):
         color="black"
     shape.draw_oval(person.location.getX()/10,person.location.getY()/10,5,color)
-    canvas.create_text(55, 20, text="Day "+str(day), fill="black", font=('Helvetica 24'))
     
 def draw_popularPlace():
     '''draw the popular places in canvas'''
     for place in ppmodel.popularPlaces:
         shape.draw_square(place.getX()/10, place.getY()/10, 20, 'pink')
 
-def ui_refresh():
+def ui_refresh(day):
     '''refresh canvas'''
+    canvas.create_text(55, 20, text="Day "+str(day), fill="black", font=('Helvetica 24'))
     window.update()
 
 def ui_delete():
