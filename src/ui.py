@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
-from Shape import Shape
-import Shape
+from shape import Shape
+import shape
 import variable
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
@@ -18,7 +18,7 @@ canvas = Canvas(window, width = WIDTH, height = HEIGHT, bg = "white")
 graph = FigureCanvasTkAgg(fig, master = window)
 window.title("Virus Simulation")
 toolbar = NavigationToolbar2Tk(graph,frame)
-shape = Shape.Shape(canvas)
+shape = shape.Shape(canvas)
 
 def start_ui():
     window.geometry(str(int(WIDTH)*2)+"x"+str(int(HEIGHT)+50))

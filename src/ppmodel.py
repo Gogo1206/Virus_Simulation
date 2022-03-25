@@ -1,16 +1,19 @@
 import random
 import mobility_model
 import simulation
-import person
 import location
 import variable
 
 popularPlaces = []
 
+#random popular place
+
 for i in range(variable.NUM_POPULAR_PLACES):
     new_place = location.Location()
     new_place.random_location()
     popularPlaces.append(new_place)
+
+#uniform popular place
 
 # xi = 1
 # yi = 1
