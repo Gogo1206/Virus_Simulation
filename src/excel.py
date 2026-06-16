@@ -1,16 +1,19 @@
 import xlwt
 
-wb = xlwt.Workbook()
-sheet1 = wb.add_sheet('Data')
+_wb = None
+_sheet1 = None
 
-def start():
-    write(0,0,"Hour #")
-    write(0,1,"S #")
-    write(0,2,"I #")
-    write(0,3,"R #")
-    write(0,4,"infection rate")
-    write(0,5,"recovery rate")
 
-def write(row,column,context):
-    sheet1.write(row, column, context)
-    wb.save('Data.xls')
+def _init():
+    """Lazy-initialize workbook so import doesn't require xlwt installed."""
+    global _wb, _sheet1
+    if _wb is None:
+        _wb = xlwt.Workbook()
+        _sheet1 = _wb.add_sheet('Data')
+
+
+def write(row, column, context):
+    """Write a cell and save the workbook."""
+    _init()
+    _sheet1.write(row, column, context)
+    _wb.save('Data.xls')

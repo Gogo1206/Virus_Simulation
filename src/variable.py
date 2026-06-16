@@ -1,7 +1,7 @@
 import enum
 
-#stages of disease
-class disease_status(enum.Enum):
+class DiseaseStatus(enum.Enum):
+    """Stages of disease progression."""
     VULNERABLE = 0
     INCUBATION = 1
     ASYMPTOMATIC = 2
@@ -29,7 +29,6 @@ MASKED_VACCINATED_INFECTTION_PROBABILTY = 0.1
 HOME_INFECTTION_PROBABILTY = 0
 NORMAL_FATALITY_RATE = 0.02
 ASYMPTOMATIC_FATALITY_RATE = 0
-# SATURATED_FATALITY_RATE = 0.06
 INFECTION_PROXIMITY = 15
 
 #population variables
@@ -50,5 +49,3 @@ NOT_DISTANCING_HOME_PROBABILITY = 0.2
 PP_TOP_SPEED = 20
 MAX_STAY = 2*24
 
-#variables to add in future
-#temperture

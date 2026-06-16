@@ -1,7 +1,9 @@
-import person
+class MobilityModel:
+    """Base class for person mobility models."""
 
-class MobilityModel():
-    def __init__ (self):
-        self.person=person.Person()
-    def setPerson(self,p):
+    def __init__(self):
+        self.person = None
+
+    def setPerson(self, p):
+        """Set the person this mobility model controls."""
         self.person = p

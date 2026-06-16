@@ -6,22 +6,19 @@ import variable
 
 popularPlaces = []
 
-#random popular place
 
-for i in range(variable.NUM_POPULAR_PLACES):
-    new_place = location.Location()
-    new_place.random_location()
-    popularPlaces.append(new_place)
+def init_popular_places():
+    """Initialize popular places with random locations.
 
-#uniform popular place
-
-# xi = 1
-# yi = 1
-# for xi in range(0, 5):
-#     for yi in range(0, 4):
-#         new_place = location.Location()
-#         new_place.location(250+xi*1750,250+yi*2333)
-#         popularPlaces.append(new_place)
+    Must be called before simulation starts.
+    """
+    global popularPlaces
+    if popularPlaces:
+        return  # already initialized
+    for i in range(variable.NUM_POPULAR_PLACES):
+        new_place = location.Location()
+        new_place.random_location()
+        popularPlaces.append(new_place)
 
 class PopularPlacesModel(mobility_model.MobilityModel):
     def __init__(self):
